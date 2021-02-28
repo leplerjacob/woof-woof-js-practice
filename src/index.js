@@ -10,17 +10,26 @@ getAllDogs()
 function filterDogs(e) {
     const button = e.target;
     const changeText = button.innerText.split(" ")
-    // console.log(text[text.length-1]);
-    if (changeText[changeText.length-1] == "OFF") {
+    if (checksFilterStatusIsOn()) {
+        document.querySelector('#dog-bar').innerHTML = ""
         changeText.pop();
-        changeText.push("ON");
+        changeText.push("OFF");
+        getAllDogs()
     } else {
+        document.querySelector('#dog-bar').innerHTML = ""
         changeText.pop()
-        changeText.push("OFF")
+        changeText.push("ON")
+        getAllDogs()
     }
-    console.log(changeText);
     button.innerText = changeText.join(" ")
 
+}
+
+// Checks current status of filter
+function checksFilterStatusIsOn(){
+    const filter = document.querySelector('#good-dog-filter');
+    const filterText = filter.innerText.split(" ")
+    return filterText[filterText.length -1] == "ON"
 }
 
 function loadDogInfo(e) {
@@ -87,15 +96,19 @@ function getAllDogs() {
 function renderDogName(dog) {
     // If filter is on, filter dogs
     // If filter is off, display all dogs
-
-
     const dogBar = document.querySelector('#dog-bar');
-    
     let dogSpan = document.createElement('span')
+    if (checksFilterStatusIsOn()){
+        console.log(dog);
+        if (dog.isGoodDog){
+            dogSpan.id = dog.id
+            dogSpan.innerText = dog.name
+            dogBar.appendChild(dogSpan)
+        }
+        return
+    }
     dogSpan.id = dog.id
     dogSpan.innerText = dog.name
-
-
     dogBar.appendChild(dogSpan)
 }
    
